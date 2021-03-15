@@ -23,7 +23,23 @@ app.post('/', (req, res) => {
     data[counter] = details;
     counter += 1;
     console.log(req.body);
-    res.send(data);
+    res.send("Data was successfully logged at index  " + (counter-1));
+});
+
+app.get('/view', (req, res) => {
+    res.sendFile(path.join(__dirname, 'static', 'view.html'));
+});
+
+app.post('/view', (req, res) => {
+    let index = req.body.index;
+    let difference = moment().unix() - data[index][2];
+
+    if (difference < (data[index][1] * 3600)) {
+        res.send("cannot view the message yet");
+    }
+    else {
+        res.send(data[index][0]);
+    }
 });
 
 app.listen(3000);
